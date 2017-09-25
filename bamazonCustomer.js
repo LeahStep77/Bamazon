@@ -57,9 +57,11 @@ display();
           if (input.quantity <= productData.stock_quantity) {
             console.log("Processing Order");
 
-            var updateQueryStr = "UPDATE products SET stock_quantity = " + (productData.stock_quantity - input.quantity) + " WHERE id = " + input.id;
-
-            var query1 = connection.query(updateQueryStr, function(err, data){
+            var update = (productData.stock_quantity - input.quantity);
+            var updateStr = "UPDATE products SET stock_quantity = "
+            var query1 = connection.query(updateStr + update + " WHERE id = ?",
+              [{id: input.id}],
+              function(err, data){
               if (err) throw err;
               console.log("Your total is: $" + productData.price * input.quantity);
               console.log("Your order is on its way.");
